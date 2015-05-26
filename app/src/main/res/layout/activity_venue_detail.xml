@@ -15,6 +15,7 @@
         android:background="@color/debug_cyan" />
 
     <TextView
+        android:id="@+id/detail_venue_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         tools:text="Juniors Deli Cafe"
@@ -26,7 +27,7 @@
 
     <TextView
         android:id="@+id/detail_phrases"
-        android:text="Tasty food etc, etc..."
+        tools:text="Tasty food etc, etc..."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="24sp"
