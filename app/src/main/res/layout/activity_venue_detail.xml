@@ -1,0 +1,43 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
+    tools:context="com.rhaddon.foursquare.foursquareexample.VenueDetailActivity">
+
+    <ImageView
+        android:id="@+id/detail_image"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/debug_cyan" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Juniors Deli Cafe"
+        android:textSize="32sp"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/gilt_gold"
+        android:layout_marginTop="16dp"
+        />
+
+    <TextView
+        android:id="@+id/detail_phrases"
+        android:text="Tasty food etc, etc..."
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <Button
+        android:id="@+id/detail_open_in_browser"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="@string/open_in_browser"/>
+
+</LinearLayout>
