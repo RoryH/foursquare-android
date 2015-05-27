@@ -12,7 +12,7 @@
         android:id="@+id/master_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:background="@color/debug_cyan">
+        >
 
         <TextView
             android:id="@+id/master_near_label"
@@ -23,7 +23,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:padding="12dp"
-            tools:background="@color/debug_green"/>
+            />
 
         <EditText
             android:id="@+id/master_near"
@@ -32,7 +32,7 @@
             android:hint="@string/near"
             android:layout_toEndOf="@id/master_near_label"
             android:layout_alignBaseline="@id/master_near_label"
-            tools:background="@color/debug_red"/>
+            />
 
         <TextView
             android:id="@+id/master_query_label"
@@ -42,7 +42,7 @@
             android:textSize="18sp"
             android:padding="12dp"
             android:layout_below="@id/master_near_label"
-            tools:background="@color/debug_green"/>
+            />
 
         <EditText
             android:id="@+id/master_query"
@@ -51,7 +51,7 @@
             android:layout_toEndOf="@id/master_query_label"
             android:layout_alignBaseline="@id/master_query_label"
             android:hint="@string/what"
-            tools:background="@color/debug_red"
+
             />
 
         <Button
@@ -73,7 +73,8 @@
         android:layout_height="match_parent"
         android:layout_below="@id/master_header"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        tools:background="@color/debug_red"></ListView>
+        tools:background="@color/debug_red"
+        tools:listitem="@layout/row_venue"></ListView>
 
 
 
