@@ -9,6 +9,10 @@ public class Venue {
     public String name;
     private FoursquarePhoto bestPhoto;
 
+    public Venue(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "Venue(name=" + name + ", photoUrl=" + bestPhoto.getUrl()+ ")";
