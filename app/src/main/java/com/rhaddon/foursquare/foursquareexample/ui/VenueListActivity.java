@@ -5,6 +5,10 @@ import android.os.Bundle;
 import android.widget.ListView;
 
 import com.rhaddon.foursquare.foursquareexample.R;
+import com.rhaddon.foursquare.foursquareexample.model.Venue;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -25,7 +29,23 @@ public class VenueListActivity extends Activity {
         setContentView(R.layout.activity_venue_list);
         ButterKnife.inject(this);
 
+        venuesListAdaptor = new VenuesAdaptor(this);
         venuesListsView.setAdapter(venuesListAdaptor);
+        venuesListAdaptor.addAll(makeFakeVenues());
+    }
+
+    private List<Venue> makeFakeVenues() {
+        List<Venue> venues = new ArrayList<>();
+
+        venues.add(new Venue("The Bridge"));
+        venues.add(new Venue("Slatterys"));
+        venues.add(new Venue("Juniors"));
+        venues.add(new Venue("Gilt's office"));
+        venues.add(new Venue("Ravis"));
+        venues.add(new Venue("Centra"));
+        venues.add(new Venue("MAIA"));
+        venues.add(new Venue("Embassy Grill"));
+        return venues;
     }
 
     @DebugLog
