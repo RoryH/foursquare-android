@@ -1,5 +1,7 @@
-package com.rhaddon.foursquare.foursquareexample;
+package com.rhaddon.foursquare.foursquareexample.client;
 
+
+import com.rhaddon.foursquare.foursquareexample.model.Venue;
 
 public class FoursquareResponse {
     public Venue venue;

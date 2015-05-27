@@ -1,4 +1,4 @@
-package com.rhaddon.foursquare.foursquareexample;
+package com.rhaddon.foursquare.foursquareexample.client;
 
 
 public class ApiConstants {

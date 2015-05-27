@@ -1,4 +1,6 @@
-package com.rhaddon.foursquare.foursquareexample;
+package com.rhaddon.foursquare.foursquareexample.client;
+
+import com.rhaddon.foursquare.foursquareexample.model.Venue;
 
 import retrofit.Callback;
 import retrofit.http.GET;

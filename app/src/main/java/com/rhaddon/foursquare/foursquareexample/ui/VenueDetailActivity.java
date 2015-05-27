@@ -1,4 +1,4 @@
-package com.rhaddon.foursquare.foursquareexample;
+package com.rhaddon.foursquare.foursquareexample.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.rhaddon.foursquare.foursquareexample.client.*;
+import com.rhaddon.foursquare.foursquareexample.R;
+import com.rhaddon.foursquare.foursquareexample.model.Venue;
 import com.squareup.picasso.Picasso;
 
 import butterknife.ButterKnife;

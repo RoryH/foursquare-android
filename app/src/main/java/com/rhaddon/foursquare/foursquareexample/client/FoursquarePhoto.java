@@ -1,4 +1,4 @@
-package com.rhaddon.foursquare.foursquareexample;
+package com.rhaddon.foursquare.foursquareexample.client;
 
 /**
  * Created by rhaddon on 26/05/15.

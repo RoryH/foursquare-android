@@ -1,10 +1,12 @@
-package com.rhaddon.foursquare.foursquareexample;
+package com.rhaddon.foursquare.foursquareexample.model;
+
+import com.rhaddon.foursquare.foursquareexample.client.FoursquarePhoto;
 
 /**
  * Created by rhaddon on 26/05/15.
  */
 public class Venue {
-    String name;
+    public String name;
     private FoursquarePhoto bestPhoto;
 
     @Override
