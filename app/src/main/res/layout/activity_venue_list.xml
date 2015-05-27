@@ -55,6 +55,7 @@
             />
 
         <Button
+            android:id="@+id/master_search_btn"
             android:text="@string/search"
             android:textSize="18sp"
             android:textColor="@color/gilt_black"

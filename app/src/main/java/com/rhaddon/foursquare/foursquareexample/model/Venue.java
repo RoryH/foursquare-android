@@ -1,5 +1,7 @@
 package com.rhaddon.foursquare.foursquareexample.model;
 
+import android.net.Uri;
+
 import com.rhaddon.foursquare.foursquareexample.client.FoursquarePhoto;
 
 /**
@@ -7,7 +9,9 @@ import com.rhaddon.foursquare.foursquareexample.client.FoursquarePhoto;
  */
 public class Venue {
     public String name;
-    private FoursquarePhoto bestPhoto;
+    public String id;
+    public String url;
+    public FoursquarePhoto bestPhoto;
 
     public Venue(String name) {
         this.name = name;
@@ -15,14 +19,6 @@ public class Venue {
 
     @Override
     public String toString() {
-        return "Venue(name=" + name + ", photoUrl=" + bestPhoto.getUrl()+ ")";
-    }
-
-    public String getBestPhoto() {
-        return bestPhoto.getUrl();
-    }
-
-    public void setBestPhoto(FoursquarePhoto bestPhoto) {
-        this.bestPhoto = bestPhoto;
+        return "Venue(name=" + name + ", id=" + id + ")";
     }
 }

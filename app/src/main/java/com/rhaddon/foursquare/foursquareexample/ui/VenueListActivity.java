@@ -1,10 +1,20 @@
 package com.rhaddon.foursquare.foursquareexample.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.rhaddon.foursquare.foursquareexample.R;
+import com.rhaddon.foursquare.foursquareexample.client.ApiConstants;
+import com.rhaddon.foursquare.foursquareexample.client.FourSquareApi;
+import com.rhaddon.foursquare.foursquareexample.client.FoursquareResponseWrapper;
+import com.rhaddon.foursquare.foursquareexample.client.Item;
+import com.rhaddon.foursquare.foursquareexample.client.VenueListResponse;
 import com.rhaddon.foursquare.foursquareexample.model.Venue;
 
 import java.util.ArrayList;
@@ -13,14 +23,27 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
-public class VenueListActivity extends Activity {
+public class VenueListActivity extends Activity implements ListView.OnItemClickListener {
     @InjectView(R.id.master_list)
-    ListView venuesListsView;
+    ListView venuesListView;
 
-    private VenuesAdaptor venuesListAdaptor;
+    @InjectView(R.id.master_near)
+    EditText nearEditText;
 
+    @InjectView(R.id.master_query)
+    EditText queryEditText;
+
+    @InjectView(R.id.master_search_btn)
+    Button querySearchBtn;
+
+    private VenuesAdaptor venuesListAdapter;
+    private FourSquareApi foursquareApi;
 
     @DebugLog
     @Override
@@ -28,24 +51,71 @@ public class VenueListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venue_list);
         ButterKnife.inject(this);
-
-        venuesListAdaptor = new VenuesAdaptor(this);
-        venuesListsView.setAdapter(venuesListAdaptor);
-        venuesListAdaptor.addAll(makeFakeVenues());
+        
+        initList();
+        initSearchButton();
+        initRestAdapter();
     }
 
-    private List<Venue> makeFakeVenues() {
-        List<Venue> venues = new ArrayList<>();
+    private void initSearchButton() {
+        querySearchBtn.setOnClickListener(new View.OnClickListener() {
+            @DebugLog
+            @Override
+            public void onClick(View v) {
+                fetchData();
+            }
+        });
+    }
 
-        venues.add(new Venue("The Bridge"));
-        venues.add(new Venue("Slatterys"));
-        venues.add(new Venue("Juniors"));
-        venues.add(new Venue("Gilt's office"));
-        venues.add(new Venue("Ravis"));
-        venues.add(new Venue("Centra"));
-        venues.add(new Venue("MAIA"));
-        venues.add(new Venue("Embassy Grill"));
+    private void initList() {
+        venuesListAdapter = new VenuesAdaptor(this);
+        venuesListView.setAdapter(venuesListAdapter);
+        venuesListView.setOnItemClickListener(this);
+    }
+
+    private void initRestAdapter() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint("https://api.foursquare.com/v2/")
+                .build();
+
+        foursquareApi = restAdapter.create(FourSquareApi.class);
+    }
+
+    private void fetchData() {
+        foursquareApi.getVenuesList(ApiConstants.CLIENT_ID,
+                ApiConstants.CLIENT_SECRET,
+                ApiConstants.VERSION_DATE,
+                getUiNearString(),
+                getUiQueryString(),
+                makeCallbackHandler());
+
+    }
+
+    private static List<Venue> getVenuesFromItems(List<Item> items) {
+        List<Venue> venues = new ArrayList<>();
+        for (Item item : items) {
+            venues.add(item.getVenue());
+        }
         return venues;
+    }
+
+    @DebugLog
+    private Callback<FoursquareResponseWrapper<VenueListResponse>> makeCallbackHandler() {
+        return new Callback<FoursquareResponseWrapper<VenueListResponse>>() {
+            @DebugLog
+            @Override
+            public void success(FoursquareResponseWrapper<VenueListResponse> venueListResponse, Response response) {
+                venuesListAdapter.clear();
+                List<Venue> venues = getVenuesFromItems(venueListResponse.getResponse().getGroups().get(0).getItems());
+                venuesListAdapter.addAll(venues);
+            }
+
+            @DebugLog
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        };
     }
 
     @DebugLog
@@ -76,5 +146,20 @@ public class VenueListActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Venue venue = venuesListAdapter.getItem(position);
+        Intent intent = VenueDetailActivity.makeIntent(this, venue);
+        startActivity(intent);
+    }
+
+    public String getUiNearString() {
+        return nearEditText.getText().toString();
+    }
+
+    public String getUiQueryString() {
+        return queryEditText.getText().toString();
     }
 }

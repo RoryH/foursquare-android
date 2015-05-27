@@ -1,6 +1,7 @@
 package com.rhaddon.foursquare.foursquareexample.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ import retrofit.client.Response;
 
 public class VenueDetailActivity extends Activity {
 
+    private static final String EXTRA_VENUE_NAME = "com.rhaddon.foursquare.venue.name";
+    private static final String EXTRA_VENUE_ID = "com.rhaddon.foursquare.venue.id";
+
     @InjectView(R.id.detail_image)
     ImageView detailImage;
     @InjectView(R.id.detail_venue_title)
@@ -33,7 +37,8 @@ public class VenueDetailActivity extends Activity {
     @InjectView(R.id.detail_open_in_browser)
     Button browserBtn;
 
-    private FourSquareService foursquareApi;
+    private FourSquareApi foursquareApi;
+    private Venue _currentVenue;
 
     @DebugLog
     @Override
@@ -51,7 +56,7 @@ public class VenueDetailActivity extends Activity {
                 .setEndpoint("https://api.foursquare.com/v2/")
                 .build();
 
-        foursquareApi = restAdapter.create(FourSquareService.class);
+        foursquareApi = restAdapter.create(FourSquareApi.class);
     }
 
     @DebugLog
@@ -64,18 +69,27 @@ public class VenueDetailActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        foursquareApi.getVenue(ApiConstants.CLIENT_ID, ApiConstants.CLIENT_SECRET, ApiConstants.VERSION_DATE, "4c2b5abe355cef3bdd3fcd56", makeApiCallbackHandler());
+        foursquareApi.getVenue(
+                ApiConstants.CLIENT_ID,
+                ApiConstants.CLIENT_SECRET,
+                ApiConstants.VERSION_DATE,
+                getVenueId(),
+                makeApiCallbackHandler()
+        );
     }
 
-    private Callback<FoursquareResponseWrapper<Venue>> makeApiCallbackHandler() {
+    private Callback<FoursquareResponseWrapper<VenueDetailResponse>> makeApiCallbackHandler() {
 
-        return new Callback<FoursquareResponseWrapper<Venue>>() {
+        return new Callback<FoursquareResponseWrapper<VenueDetailResponse>>() {
             @DebugLog
             @Override
-            public void success(FoursquareResponseWrapper<Venue> venue, Response response) {
-                titleLbl.setText(venue.response.venue.name);
+            public void success(FoursquareResponseWrapper<VenueDetailResponse> responseWrapper, Response response) {
+                _currentVenue = responseWrapper.getResponse().getVenue();
+                titleLbl.setText(_currentVenue.name);
+
+                FoursquarePhoto photo = _currentVenue.bestPhoto;
                 if (null != detailImage) {
-                    Picasso.with(VenueDetailActivity.this).load(venue.response.venue.getBestPhoto()).into(detailImage);
+                    Picasso.with(VenueDetailActivity.this).load(photo.getUrl()).into(detailImage);
                 }
             }
 
@@ -114,10 +128,26 @@ public class VenueDetailActivity extends Activity {
               @Override
               public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
-                  intent.setData(Uri.parse("http://www.gilt.com"));
+                  intent.setData(Uri.parse(_currentVenue.url));
                   startActivity(intent);
               }
           }
         );
+    }
+
+    @DebugLog
+    public static Intent makeIntent(Context context, Venue venue) {
+        Intent intent = new Intent(context, VenueDetailActivity.class);
+        intent.putExtra(EXTRA_VENUE_NAME, venue.name);
+        intent.putExtra(EXTRA_VENUE_ID, venue.id);
+        return intent;
+    }
+
+    private String getVenueId() {
+        if (getIntent().hasExtra(EXTRA_VENUE_ID)) {
+            return getIntent().getStringExtra(EXTRA_VENUE_ID);
+        } else {
+            throw new IllegalArgumentException("Venue ID not provided for VenueDetailActivity");
+        }
     }
 }

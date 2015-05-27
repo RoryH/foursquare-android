@@ -1,5 +1,7 @@
 package com.rhaddon.foursquare.foursquareexample.client;
 
+import hugo.weaving.DebugLog;
+
 /**
  * Created by rhaddon on 26/05/15.
  */
@@ -11,11 +13,10 @@ public class FoursquarePhoto {
     private int height;
 
     FoursquarePhoto() {
-
     }
 
     public String getUrl() {
         return prefix + "width" + width + suffix;
-    }
 
+    }
 }

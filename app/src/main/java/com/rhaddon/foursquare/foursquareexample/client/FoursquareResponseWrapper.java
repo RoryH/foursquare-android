@@ -1,15 +1,19 @@
 package com.rhaddon.foursquare.foursquareexample.client;
-
-
 public class FoursquareResponseWrapper<T> {
-    public FoursquareResponse response;
+
+    public T response;
 
     FoursquareResponseWrapper() {
     }
 
-    @Override
-    public String toString() {
-        return "FoursquareResponseWrapper( venue=" + response + " )";
+    public T getResponse() {
+        return response;
     }
 
+    @Override
+    public String toString() {
+        return "FoursquareResponseWrapper{" +
+                "response=" + response +
+                '}';
+    }
 }
